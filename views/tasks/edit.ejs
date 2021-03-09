@@ -1,0 +1,34 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <form action="/sections/<%=result[0].section_id%>/<%=result[0].task_id%>?_method=PATCH" method="POST"
+                    novalidate class="validated-form">
+                    <div class="mb-3">
+                        <label for="taskInput" class="form-label">Task:</label>
+                        <input type="text" class="form-control" id="taskInput" aria-describedby="taskInput" required
+                            name="task[task]" value="<%=result[0].task%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueInput" class="form-label">Due Date:</label>
+                        <input type="date" class="form-control" id="dueInput" aria-describedby="dueInput" required
+                            name="task[due]" value="<%=result[0].due%>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descriptionInput" class="form-label">Description:</label>
+                        <textarea name="task[description]" id="descriptionInput" cols="30" rows="6"
+                            class="form-control"><%=result[0].description%></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-check-input" type="checkbox" value="yes" id="flexCheckDefault"
+                            name="task[priority]" <% if (result[0].priority) { %> checked<% } %>>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Priority?
+                            </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit Task</button>
+                    <a href="/sections/<%=result[0].section_id%>" class="btn btn-secondary">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>

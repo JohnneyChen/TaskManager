@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <form action="/sections/<%=result[0].id%>?_method=PATCH" method="POST" novalidate
+                    class="validated-form">
+                    <div class="mb-3">
+                        <label for="sectionInput" class="form-label">Section label</label>
+                        <input type="text" class="form-control" id="sectionInput" aria-describedby="sectionInput"
+                            required name="section[label]" value="<%=result[0].label%>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit Section</button>
+                </form>
+            </div>
+        </div>
+    </div>

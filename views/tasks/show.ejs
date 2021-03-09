@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title 
+                        <%= ((Date.now() + 86400000)> Date.parse(result[0].due)) ? " text-danger" : "" %>
+                            <%= ((Date.now() + 86400000*3)> Date.parse(result[0].due)) ? " text-warning" : ""%>
+                                ">
+                                <%= result[0].task %>
+                        </h5>
+                        <p class="card-text text-muted mb-2">Due: <%= result[0].due%>
+                        </p>
+                        <p class="card-text">
+                            <%= result[0].description%>
+                        </p>
+                        <a href="/sections/<%=result[0].section_id%>/<%=result[0].task_id%>/edit"
+                            class="mb-2 btn btn-sm btn-primary">Edit
+                            Task</a>
+                        <form action="/sections/<%=result[0].section_id%>/<%=result[0].task_id%>?_method=DELETE"
+                            method="POST">
+                            <button class="btn btn-danger btn-sm mb-2">Delete Task</button>
+                        </form>
+                        <a href="/sections/<%=result[0].section_id%>" class="btn btn-secondary btn-sm">Back to
+                            Section</a>
+                        <div class="">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header fw-bold">Sections</div>
+                    <ul class="list-group list-group-flush">
+                        <% for (let row of result) { %>
+                            <li class="list-group-item"><a href="/sections/<%=row.id%>"
+                                    class="text-decoration-none text-primary">
+                                    <%=row.label%> <span class="badge bg-secondary">
+                                            <%=row.task_count %>
+                                        </span>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                    <div class="card-body">
+                        <a href="/sections/new" class="btn btn-success">Add Section</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>

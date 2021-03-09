@@ -1,0 +1,33 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <form action="/sections/<%=result[0].id%>" method="POST" novalidate class="validated-form">
+                    <div class="mb-3">
+                        <label for="taskInput" class="form-label">Task:</label>
+                        <input type="text" class="form-control" id="taskInput" aria-describedby="taskInput" required
+                            name="task[task]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueInput" class="form-label">Due Date:</label>
+                        <input type="date" class="form-control" id="dueInput" aria-describedby="dueInput" required
+                            name="task[due]">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descriptionInput" class="form-label">Description:</label>
+                        <textarea name="task[description]" id="descriptionInput" cols="30" rows="6"
+                            class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-check-input" type="checkbox" value="yes" id="flexCheckDefault"
+                            name="task[priority]">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Priority?
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                    <a href="/sections/<%=result[0].id%>" class="btn btn-secondary">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
