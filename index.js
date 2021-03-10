@@ -9,12 +9,20 @@ const flash = require('connect-flash')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
+const MySQLStore = require('express-mysql-session')(session)
 
 const { AppError } = require('./Utilities')
 const sectionRoute = require('./routes/section')
 const taskRoute = require('./routes/task')
 
 const app = express()
+
+const sessionStore = new MySQLStore({
+    host: process.env.DATABASE_HOST || 'localhost',
+    user: process.env.DATABASE_USERNAME || 'root',
+    password: process.env.DATABASE_PASSWORD || 'password',
+    database: process.env.DATABASE || 'task_manager'
+})
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -23,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'))
 app.use(urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false, store: sessionStore }))
 app.use(flash())
 app.use(cookieParser())
 app.use(helmet());
