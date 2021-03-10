@@ -21,7 +21,8 @@ const sessionStore = new MySQLStore({
     host: process.env.DATABASE_HOST || 'localhost',
     user: process.env.DATABASE_USERNAME || 'root',
     password: process.env.DATABASE_PASSWORD || 'password',
-    database: process.env.DATABASE || 'task_manager'
+    database: process.env.DATABASE || 'task_manager',
+    port: process.env.PORT || 3306;
 })
 
 app.set('view engine', 'ejs')
