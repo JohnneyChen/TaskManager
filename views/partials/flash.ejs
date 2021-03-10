@@ -1,5 +1,5 @@
 <% if (success) {%>
-    <% if (success.length) %>
+    <% if (success.length) {%>
         <div class="alert alert-success alert-dismissible fade show " role="alert">
             <%=success%>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -8,7 +8,7 @@
             <%}%>
 
                 <% if (error) {%>
-                    <% if (error.length) %>
+                    <% if (error.length) {%>
                         <div class="alert alert-danger alert-dismissible fade show " role="alert">
                             <%=error%>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"
