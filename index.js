@@ -17,9 +17,7 @@ const taskRoute = require('./routes/task')
 
 const app = express()
 const dburl = process.env.CLEARDB_DATABASE_URL
-const sessionStore = new MySQLStore({
-    dburl
-})
+const sessionStore = new MySQLStore(dburl)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))

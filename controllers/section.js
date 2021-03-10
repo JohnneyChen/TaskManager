@@ -2,9 +2,7 @@ const mysql = require('mysql')
 
 const dburl = process.env.CLEARDB_DATABASE_URL
 
-const connection = mysql.createConnection({
-    dburl
-});
+const connection = mysql.createConnection(dburl);
 
 connection.connect();
 
