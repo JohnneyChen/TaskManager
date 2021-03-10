@@ -1,11 +1,8 @@
 const mysql = require('mysql')
 
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'task_manager'
-});
+const dburl = process.env.CLEARDB_DATABASE_URL
+
+const connection = mysql.createConnection(dburl);
 
 connection.connect();
 
