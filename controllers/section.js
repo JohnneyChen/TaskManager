@@ -1,19 +1,9 @@
-const mysql = require('mysql')
-
-const dburl = process.env.CLEARDB_DATABASE_URL
-
-const connection = mysql.createConnection(dburl);
-
-connection.connect();
+const pool = require('../mysqlConnection')
 
 const getSections = (req, res) => {
-    connection.query('SELECT label, sections.id AS id, COUNT(task.id) AS task_count FROM sections LEFT JOIN task ON task.section_id=sections.id GROUP BY sections.id', (error, result) => {
+    pool.query('SELECT label, sections.id AS id, COUNT(task.id) AS task_count FROM sections LEFT JOIN task ON task.section_id=sections.id GROUP BY sections.id', (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         console.log(result)
         res.render('sections/index', { result })
@@ -27,13 +17,9 @@ const getSectionNew = (req, res) => {
 const postSectionNew = (req, res) => {
     const q = 'INSERT INTO sections(label) VALUES ?'
     const label = [[req.body.section.label]]
-    connection.query(q, [label], (error, result) => {
+    pool.query(q, [label], (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully created a new section!")
         res.redirect('/sections')
@@ -43,13 +29,9 @@ const postSectionNew = (req, res) => {
 const getSection = (req, res) => {
     const { sectionId } = req.params
     const q = 'SELECT sections.id AS section_id, label, task, due, priority, task.id AS task_id FROM sections LEFT JOIN task ON task.section_id=sections.id WHERE sections.id=?'
-    connection.query(q, sectionId, (error, result) => {
+    pool.query(q, sectionId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         res.render('sections/show', { result })
     });
@@ -58,13 +40,9 @@ const getSection = (req, res) => {
 const getSectionEdit = (req, res) => {
     const { sectionId } = req.params
     const q = 'SELECT * FROM sections WHERE sections.id=?'
-    connection.query(q, sectionId, (error, result) => {
+    pool.query(q, sectionId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         console.log(result)
         res.render('sections/edit', { result })
@@ -75,13 +53,9 @@ const patchSection = (req, res) => {
     const { sectionId } = req.params
     const { label } = req.body.section
     const q = 'UPDATE sections SET label=? WHERE id=?'
-    connection.query(q, [label, sectionId], (error, result) => {
+    pool.query(q, [label, sectionId], (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully edited the section!")
         res.redirect(`${sectionId}`)
@@ -91,13 +65,9 @@ const patchSection = (req, res) => {
 const deleteSection = (req, res) => {
     const { sectionId } = req.params
     q = 'DELETE FROM sections WHERE id=?'
-    connection.query(q, sectionId, (error, result) => {
+    pool.query(q, sectionId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully deleted the section!")
         res.redirect(`/sections`)

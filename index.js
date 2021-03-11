@@ -10,18 +10,16 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const MySQLStore = require('express-mysql-session')(session)
-const mysql = require('mysql')
-
-
 
 const { AppError } = require('./Utilities')
 const sectionRoute = require('./routes/section')
 const taskRoute = require('./routes/task')
+const pool = require('./mysqlConnection')
 
 const app = express()
 
 const dburl = process.env.CLEARDB_DATABASE_URL
-const connection = mysql.createConnection(dburl);
+const connection = [pool.getConnection()
 const sessionStore = new MySQLStore({}, connection)
 
 app.set('view engine', 'ejs')

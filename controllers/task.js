@@ -1,21 +1,11 @@
-const mysql = require('mysql')
-
-const dburl = process.env.CLEARDB_DATABASE_URL
-
-const connection = mysql.createConnection(dburl);
-
-connection.connect();
+const pool = require('../mysqlConnection')
 
 const getTaskNew = (req, res) => {
     const { sectionId } = req.params
     const q = 'SELECT id FROM sections WHERE id=?'
-    connection.query(q, sectionId, (error, result) => {
+    pool.query(q, sectionId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         res.render('tasks/new', { result })
     });
@@ -31,13 +21,9 @@ const postTaskNew = (req, res) => {
         priority = true
     }
     const q = 'INSERT INTO task (task,due,description,priority,section_id) VALUES ?'
-    const query = connection.query(q, [[[task, due, description, priority, sectionId]]], (error, result) => {
+    const query = pool.query(q, [[[task, due, description, priority, sectionId]]], (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully added a new task to the section!")
         res.redirect(`/sections/${sectionId}`)
@@ -48,14 +34,10 @@ const postTaskNew = (req, res) => {
 const getTask = (req, res) => {
     const { sectionId, taskId } = req.params
     const q = 'SELECT sections.id AS section_id, task.id AS task_id, task, DATE_FORMAT(due,"%Y-%m-%d") AS due, description,priority FROM sections INNER JOIN task ON task.section_id=sections.id WHERE task.id=?'
-    const query = connection.format(q, taskId)
-    connection.query(q, taskId, (error, result) => {
+    const query = pool.format(q, taskId)
+    pool.query(q, taskId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         res.render('tasks/show', { result })
     });
@@ -64,13 +46,9 @@ const getTask = (req, res) => {
 const getTaskEdit = (req, res) => {
     const { sectionId, taskId } = req.params
     const q = 'SELECT sections.id AS section_id, task.id AS task_id, task, DATE_FORMAT(due,"%Y-%m-%d"), description,priority FROM sections INNER JOIN task ON task.section_id=sections.id WHERE task.id=?'
-    connection.query(q, taskId, (error, result) => {
+    pool.query(q, taskId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         res.render('tasks/edit', { result })
     });
@@ -85,13 +63,9 @@ const patchTask = (req, res) => {
     }
     const queryValue = [task, due, description, priority, sectionId, taskId]
     const q = 'UPDATE task SET task=?,due=?,description=?,priority=?,section_id=? WHERE id=?'
-    connection.query(q, queryValue, (error, result) => {
+    pool.query(q, queryValue, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully edited the task!")
         res.redirect(`/sections/${sectionId}/${taskId}`)
@@ -101,13 +75,9 @@ const patchTask = (req, res) => {
 const deleteTask = (req, res) => {
     const { sectionId, taskId } = req.params
     const q = 'DELETE FROM task WHERE id=?'
-    connection.query(q, taskId, (error, result) => {
+    pool.query(q, taskId, (error, result) => {
         if (error) {
-            if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-                connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-            } else {
-                throw error
-            }
+            throw error
         }
         req.flash('success', "Successfully deleted the task!")
         res.redirect(`/sections/${sectionId}`)
