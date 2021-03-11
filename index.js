@@ -19,7 +19,7 @@ const pool = require('./mysqlConnection')
 const app = express()
 
 const dburl = process.env.CLEARDB_DATABASE_URL
-const connection = [pool.getConnection()
+const connection = pool.getConnection()
 const sessionStore = new MySQLStore({}, connection)
 
 app.set('view engine', 'ejs')
