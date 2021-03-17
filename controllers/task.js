@@ -34,7 +34,6 @@ const postTaskNew = (req, res) => {
 const getTask = (req, res) => {
     const { sectionId, taskId } = req.params
     const q = 'SELECT sections.id AS section_id, task.id AS task_id, task, DATE_FORMAT(due,"%Y-%m-%d") AS due, description,priority FROM sections INNER JOIN task ON task.section_id=sections.id WHERE task.id=?'
-    const query = pool.format(q, taskId)
     pool.query(q, taskId, (error, result) => {
         if (error) {
             throw error
